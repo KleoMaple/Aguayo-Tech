@@ -12,7 +12,7 @@ minimizando la distancia total recorrida.
 - [Carlos Andres Chico Aguayo](https://github.com/KleoMaple) Project Manager 📈
 - [Gael Emiliano Anaya Garcia](https://github.com/EmilianoAnaya) FrontEnd 💻
 - [Naylea Danae Silva Penaloza](https://github.com/NayleaDanae) FrontEnd 💻
-- [Carlos Humberto Avila Sanches](https://github.com/CarlosHumbertoAvilaSanchez) BackEnd 👨‍💻
+- [Carlos Humberto Avila Sanchez](https://github.com/CarlosHumbertoAvilaSanchez) BackEnd 👨‍💻
 - [Nahomi Itzel Luna Ornelas](https://github.com/NahomiLunaOR) Tester 📝
 
 
