@@ -17,17 +17,71 @@ minimizando la distancia total recorrida.
 
 
 ## Roadmap
+### Semana 1: Planificación y Preparación
+**Fecha máxima de entrega:** 16 de noviembre
+#### **Todos los Roles:**
+- Revisar y comprender completamente los requisitos del proyecto.
+- Modelar la solución para el problema.
+#### **FrontEnd:**
+- Comenzar el diagrama de flujo junto con el BackEnd.
+- Analizar junto con el BackEnd cómo se relacionará con la lógica del algoritmo.
+- Investigar y evaluar tecnologías específicas para implementar la interfaz.
+- Revisar el boceto.
+#### **FrontEnd 2:**
+- Investigar y analizar sobre las tendencias de diseño.
+- Desarrollar estrategias para la interacción del usuario.
+- Diseñar diagrama caso de uso.
+- Diseñar el boceto de la interfaz.
+#### **BackEnd:**
+- Comenzar el diagrama de flujo junto con el FrontEnd.
+- Investigar y seleccionar el algoritmo adecuado para el problema.
+- Analizar junto con el FrontEnd cómo se relacionará con la interfaz del algoritmo.
+- Iniciar el diseño y la planificación de la implementación del algoritmo en Python.
+#### **Tester:**
+- Preparar conjuntos de datos de prueba para validar el algoritmo.
+- Preparar el testplan para la fase de prueba y validación.
+- Investigar sobre el uso de GitHub y Git.
+- Training a compañeros para aprender sobre el uso.
 
-- Generación de Datos de Entrada
-- Modelado del Problema
-- Selección de Algoritmo
-- Implementación
-- Interfaz de Usuario
-- Estrategias de Optimización
-- Pruebas y Validación
-- Evaluación del Rendimiento
-- Documentación
-- Presentación
+### Semana 2: Implementación Inicial y Diseño de la Interfaz
+**Fecha máxima de entrega:** 20 de noviembre
+#### **FrontEnd:**
+- Continuar el diseño de la interfaz de usuario.
+- Desarrollar la parte inicial de la interfaz para cargar datos.
+- Colaborar con el BackEnd para una buena integración con el algoritmo.
+#### **FrontEnd 2:**
+- Implementar posibles mejoras de diseño.
+- Desarrollar la parte final de la interfaz para mostrar los datos.
+- Colaborar con el BackEnd para una buena integración con el algoritmo.
+#### **BackEnd:**
+- Comenzar la implementación del algoritmo en Python.
+- Integrar el algoritmo con el sistema general.
+- Colaborar con ambos FrontEnd para la buena integración con la interfaz.
+#### **Tester:**
+- Ejecutar pruebas preliminares con conjuntos de datos pequeños.
+- Validar la carga de datos y la salida del algoritmo en una etapa temprana.
+- Pruebas de Usabilidad de etapas tempranas de la interfaz.
+
+### Semana 3: Optimización y Pruebas Finales
+**Fecha máxima de entrega:** 25 de noviembre
+#### **Todos los Roles:**
+- Revisar y ajustar el plan según el progreso actual.
+- Resolver cualquier problema de comunicación o bloqueo.
+- Preparación para la presentación.
+#### **FrontEnd:**
+- Implementar la visualización de rutas optimizadas y soluciones.
+- Documentación de la interfaz.
+#### **FrontEnd 2:**
+- Implementar posibles mejoras de diseño.
+- Desarrollar la parte final de la interfaz para mostrar los datos.
+#### **BackEnd:**
+- Optimizar el código del algoritmo y realizar pruebas de rendimiento.
+- Implementar estrategias de optimización y asegurarse de que se integren correctamente.
+- Documentación del algoritmo.
+#### **Tester:**
+- Ejecutar pruebas exhaustivas con conjuntos de datos variados.
+- Verificar la validez y la cercanía a la optimalidad de las soluciones.
+- Validar el rendimiento y documentarlo.
 
 
 ## Ejemplos de Datos
