@@ -42,14 +42,14 @@ class Coordinate:
         return self._y
     
     #Método set de la coordenada X
-    def set_x(self, x:float) ->None:
+    def set_x(self, x: float) -> None:
         """
         Establece la coordenada en X
         """
         self._x = x
     
     #Método set de la coordenada Y
-    def set_y(self, y:float) ->None:
+    def set_y(self, y: float) -> None:
         """
         Establece la coordenada en Y
         """
