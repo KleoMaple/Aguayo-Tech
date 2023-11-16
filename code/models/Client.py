@@ -63,7 +63,7 @@ class Client:
         Evalúa si tanto el nombre del cliente como la dirección son iguales
         """
         if isinstance(self, Client):
-            return self._name == other._name and self._address == self._address
+            return self._name == other._name and self._address == other._address
         
         return False
 
