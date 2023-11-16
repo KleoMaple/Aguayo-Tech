@@ -1,0 +1,22 @@
+{
+    "clients": [
+        {
+            "nombre": "Juan",
+            "apellido": "Pérez",
+            "coordenada_X": 10,
+            "coordenada_Y": 20
+        },
+        {
+            "nombre": "María",
+            "apellido": "Gómez",
+            "coordenada_X": 15,
+            "coordenada_Y": 25
+        },
+        {
+            "nombre": "Carlos",
+            "apellido": "Rodríguez",
+            "coordenada_X": 8,
+            "coordenada_Y": 18
+        }
+    ]
+}

@@ -4,7 +4,7 @@ main_win = tk.Tk()
 main_win.title("Interfaz de Usuario")
 main_win.geometry("700x500+600+250")
 main_win.resizable(width=False, height=False)
-imagen_tkinter = tk.PhotoImage(file="Aguayo-Tech/code/frontend/images/background_mainmenu.png")
+imagen_tkinter = tk.PhotoImage(file="frontend/img/bg_menu.png")
 
 canvas = tk.Canvas(main_win, width=700, height=500)
 canvas.pack(fill="both", expand=True)
@@ -91,5 +91,3 @@ btn_end_main = tk.Button(main_win,
                          activebackground="aquamarine",
                          command=lambda: finish_window(main_win, None))
 btn_end_main.pack(pady=20, padx=20, in_=canvas)
-
-main_win.mainloop()
