@@ -42,14 +42,14 @@ class Name:
         """
         Establece el primer nombre
         """
-        self._fist = first
+        self._first = first
     
     #Método set para el apellido
     def set_last(self, last: str) ->None:
         """
         Establece el apellido
         """
-        self.last = last
+        self._last = last
     
     #Método igual que
     def __eq__(self, other: object) -> bool:
