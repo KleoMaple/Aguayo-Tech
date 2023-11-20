@@ -1,13 +1,23 @@
 import tkinter as tk
+from constants import ASSETS_PATH
 
 main_win = tk.Tk()
 main_win.title("Interfaz de Usuario")
 main_win.geometry("700x500+600+250")
-main_win.resizable(width=False, height=False)
-img_main = tk.PhotoImage(file="Aguayo-Tech/code/frontend/img/bg_menu.png")
-img_signup = tk.PhotoImage(file="Aguayo-Tech/code/frontend/img/bg_signup.png")
-img_mapa = tk.PhotoImage(file="Aguayo-Tech/code/frontend/img/img_map.png")
-img_order = tk.PhotoImage(file="Aguayo-Tech/code/frontend/img/bg_order.png")
+main_win.resizable(width = False, height = False)
+
+img_main = tk.PhotoImage(
+    file=f"{ASSETS_PATH}bg_menu.png"
+)
+img_signup = tk.PhotoImage(
+    file = f"{ASSETS_PATH}bg_signup.png"
+)
+img_mapa = tk.PhotoImage(
+    file = f"{ASSETS_PATH}img_map.png"
+)
+img_order = tk.PhotoImage(
+    file = f"{ASSETS_PATH}bg_order.png"
+)
 
 canvas = tk.Canvas(main_win, width=700, height=500)
 canvas.pack(fill="both", expand=True)
