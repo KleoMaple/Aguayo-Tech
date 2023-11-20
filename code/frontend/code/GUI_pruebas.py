@@ -1,10 +1,17 @@
 import tkinter as tk
 
-def finish_window(window, main_win):
-    window.destroy()
-    if main_win != None:
-        main_win.deiconify() 
+win_order = tk.Tk() ##Cambiar a tk.Toplevel()
+win_order.title("Ordenar Productos")
+win_order.geometry("900x1000+500+0")
+win_order.resizable(height=False, width=False)
+img_order = tk.PhotoImage(file="Aguayo-Tech/code/frontend/img/bg_order.png")
 
+canvas_order = tk.Canvas(win_order, width=900, height=1000)
+canvas_order.pack(fill="both", expand=True)
+canvas_order.create_image(0,0, anchor=tk.NW, image=img_order)
+
+
+##### FUNCIONES #####
 def on_entry_click(event, dato_entry, placeholder):
     if dato_entry.get() == placeholder:
         dato_entry.delete(0, tk.END)
@@ -15,57 +22,62 @@ def on_entry_leave(event, dato_entry, placeholder):
         dato_entry.insert(0, placeholder)
         dato_entry.config(fg='grey')
 
-### VENTANA REGISTROS CLIENTES ###
-win_signup = tk.Tk()
-win_signup.title("Registro de Clientes")
-win_signup.geometry("900x700+500+200")
-img_signup = tk.PhotoImage(file="Aguayo-Tech/code/frontend/img/bg_signup.png")
+def entry_creator(canvas, x, y, placeholder):
+    entry = tk.Entry(win_order, bg="white", fg="gray", font="consolas 14")
+    entry.insert(0, placeholder)
+    entry.bind('<FocusIn>', lambda event: on_entry_click(event, entry, placeholder))
+    entry.bind('<FocusOut>', lambda event: on_entry_leave(event, entry, placeholder))
+    window = canvas_order.create_window(x, y, anchor=tk.NW, window=entry)
+    return entry
 
-canvas_signup = tk.Canvas(win_signup, width=900, height=700)
-canvas_signup.pack(fill="both", expand=True)
-canvas_signup.create_image(0,0,anchor=tk.NW, image=img_signup)
+def validar_entradas():
+    for entry in entries:
+        print(entry.get())
 
-lbl_title_signup = tk.Label(win_signup,
-                            text="Registro de Cliente",
-                            font="consolas 22 bold",
-                            bg="sky blue",
-                            padx= 100, pady=20,
-                            relief=tk.GROOVE)
-lbl_title_signup.pack(pady=20, padx=20, in_=canvas_signup)
+lbl_menu_ord = tk.Label(win_order,
+                        text="Ordenar Pedido",
+                        font="consolas 22 bold",
+                        bg="sky blue",
+                        padx=50, pady=20,
+                        relief=tk.GROOVE)
+lbl_menu_ord.pack(pady=10, padx=10, in_=canvas_order)
 
-#### FRAME NOMBRE Y APELLIDO CLIENTE ####
-frm_datos = tk.Frame(win_signup, bg="#00a2e8")
+###### SELECT Clientes #######
 
-in_nombre = tk.Entry(frm_datos,
-                     bg="white", fg="gray",
-                     font="consolas 18")
-in_nombre.insert(0, "Nombre")
-in_nombre.bind('<FocusIn>', lambda event: on_entry_click(event, in_nombre, "Nombre"))
-in_nombre.bind('<FocusOut>', lambda event: on_entry_leave(event, in_nombre, "Nombre"))
-in_nombre.pack(padx=5, side=tk.LEFT, in_=frm_datos)
+canvas_order.create_text(450,120,
+                         text="Seleccione al Cliente Indicado",
+                         font="consolas 18 bold")
 
-in_apellido = tk.Entry(frm_datos,
-                     bg="white", fg="gray",
-                     font="consolas 18")
-in_apellido.insert(0, "Apellido")
-in_apellido.bind('<FocusIn>', lambda event: on_entry_click(event, in_apellido, "Apellido"))
-in_apellido.bind('<FocusOut>', lambda event: on_entry_leave(event, in_apellido, "Apellido"))
-in_apellido.pack(padx=5, side=tk.LEFT, in_=frm_datos)
+list_clients = ["Cliente 1","Cliente 2","Cliente 3","Cliente 4","Cliente 5","Cliente 6",
+                "Cliente 7","Cliente 8","Cliente 9","Cliente 10","Cliente 11","Cliente 12",]
+                #Esta lista debe ser capaz de agarrar los datos del .json con los
+                #nombres de cada cliente existente.
 
+selected = tk.StringVar()
+selected.set(list_clients[0])
 
+select_clientes = tk.OptionMenu(win_order,selected,*list_clients)
+canvas_order.create_window(400,150,anchor=tk.NW,window=select_clientes)
 
-frm_datos.pack(in_=canvas_signup)  
-#########################################
+###### FIN DE SELECT #######
 
+#### CAMPOS DE MULTIPLES PRODUCTOS #########
 
-btn_end_main = tk.Button(win_signup,
-                         text="Salir",
-                         font="consolas 14 bold",
-                         bg="pale green",
-                         relief=tk.GROOVE, bd=2,
-                         width=6, height=1,
-                         activebackground="aquamarine",
-                         command=lambda: finish_window(win_signup, None))
-btn_end_main.pack(pady=20, padx=20, in_=canvas_signup)
+canvas_order.create_text(455,210,
+                         text="Ingrese nombre y peso de los productos que desee pedir",
+                         font="consolas 16 bold")
+canvas_order.create_text(300,260,
+                         text="Productos",
+                         font="consolas 14 bold")
+canvas_order.create_text(600,260,
+                         text="Pesos",
+                         font="consolas 14 bold")
 
-win_signup.mainloop()
+entries = []
+y_increased = 0
+for i in range(0,10):
+    entry_creator(canvas_order, 205, 290+y_increased, "Producto")
+    entry_creator(canvas_order, 505, 290+y_increased, "Peso")
+    y_increased = y_increased + 60
+
+win_order.mainloop()
