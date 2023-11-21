@@ -62,6 +62,22 @@ class Coordinate:
         """
         return sqrt(self._x**2 + self._y**2)
 
+    #Método para obtener la distancia respecto a otro objeto
+    def get_distance_to(self, other: object) -> float:
+        """
+        Obtiene la distancia respecto a otro objeto
+        """
+        if isinstance(other, Coordinate):
+            return sqrt((self._x - other.get_x())**2 + (self._y - other.get_y())**2)
+        return NotImplemented
+
+    #Método para obtener las coordenadas en forma de tupla
+    def get_point(self) -> tuple:
+        """
+        Retorna las coordenadas en forma de tupla
+        """
+        return self._x, self._y
+    
     #Método igual que
     def __eq__(self, other: object) -> bool:
         """
