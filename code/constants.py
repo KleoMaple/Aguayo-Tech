@@ -1,3 +1,4 @@
+from models.Coordinate import Coordinate
 
 """
     Constantes para utilizar en todo el sistema. En caso de que vean que tienen una 
@@ -11,3 +12,28 @@ ASSETS_PATH = "assets/"
 
 # BACKEND
 
+VEHICLE_LIMIT = 25
+
+
+    
+
+"""
+    LIMITES DEL MAPA
+
+                           100
+                            |
+               NORTH_EAST   |    NORTH_WEST
+                            |
+                            |
+          -100--------------+--------------100
+                            |
+                            |
+              SOUTH_EAST    |    SOUTH_WEST
+                            |
+                          -100
+
+"""
+NORTH_EAST = [Coordinate(-100, 0), Coordinate(0, 100)]
+NORTH_WEST = [Coordinate(0, 100), Coordinate(100, 0)]
+SOUTH_EAST = [Coordinate(-100, 0), Coordinate(0, -100)]
+SOUTH_WEST = [Coordinate(100, 0), Coordinate(0, -100)]
