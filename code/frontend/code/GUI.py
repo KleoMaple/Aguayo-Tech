@@ -1,6 +1,10 @@
 import tkinter as tk
 from constants import ASSETS_PATH
 
+from services.clients import get_clients_names, get_clients
+
+from components.button import button
+
 main_win = tk.Tk()
 main_win.title("Interfaz de Usuario")
 main_win.geometry("700x500+600+250")
@@ -29,6 +33,10 @@ def finish_window(window, main_win):
     window.destroy()
     if main_win != None:
         main_win.deiconify()
+
+def hola():
+    print("Hola")
+
 
 def on_entry_click(event, dato_entry, placeholder):
     if dato_entry.get() == placeholder:
@@ -130,24 +138,12 @@ def SignUp_win(main_win):
 
     ########### FIN MAPA Y COORDENADAS ########
 
-    btn_register = tk.Button(win_signup,
-                             text="Registrar",
-                             font="consolas 14 bold",
-                             bg="pale green",
-                             relief=tk.GROOVE, bd=2,
-                             width=10, height=1,
-                             activebackground="aquamarine")
-                             #command=lambda: finish_window(win_signup, main_win))
-    canvas_signup.create_window(175,420,anchor=tk.NW,window=btn_register)
+    btn_registrar = button(win_signup, "Registrar", lambda: hola())
+    
+    canvas_signup.create_window(175,420,anchor=tk.NW,window = btn_registrar)
 
-    btn_end_main = tk.Button(win_signup,
-                             text="Salir",
-                             font="consolas 14 bold",
-                             bg="pale green",
-                             relief=tk.GROOVE, bd=2,
-                             width=10, height=1,
-                             activebackground="aquamarine",
-                             command=lambda: finish_window(win_signup, main_win))
+    btn_end_main = button(win_signup, "Salir", lambda: finish_window(win_signup, main_win))
+
     canvas_signup.create_window(175,490,anchor=tk.NW,window=btn_end_main)
 
 ######### FIN DE VENTANA REGISTROS ##########
@@ -177,9 +173,10 @@ def Order_win(main_win):
     canvas_order.create_text(450,120,
                              text="Seleccione al Cliente Indicado",
                              font="consolas 18 bold")
+       
+    clients = get_clients()
 
-    list_clients = ["Cliente 1","Cliente 2","Cliente 3","Cliente 4","Cliente 5","Cliente 6",
-                    "Cliente 7","Cliente 8","Cliente 9","Cliente 10","Cliente 11","Cliente 12",]
+    list_clients = get_clients_names(clients)
                     #Esta lista debe ser capaz de agarrar los datos del .json con los
                     #nombres de cada cliente existente.
 

@@ -8,14 +8,12 @@ from models.Coordinate import Coordinate
 # FRONTEND
 
 ASSETS_PATH = "assets/"
-
+CLIENTS_PATH = "mocks/clients.json"
 
 # BACKEND
 
 VEHICLE_LIMIT = 25
 
-
-    
 
 """
     LIMITES DEL MAPA
