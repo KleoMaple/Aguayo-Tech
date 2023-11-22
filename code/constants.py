@@ -10,7 +10,7 @@ from models.Vehicle import Vehicle
 ASSETS_PATH = "assets/"
 CLIENTS_PATH = "mocks/clients.json"
 
-# BACKEND
+# CONSTANTES BACKEND
 
 VEHICLE_LIMIT = 25
 
