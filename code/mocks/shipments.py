@@ -6,40 +6,13 @@ from models.Product import Product
 
 from typing import List
 
-shipments: List[Shipment] = [
+shipments = [
     Shipment(
         Client(
-            Name("Juan", "Perez"), 
-            Coordinate(69, 7)
+            Name(f"Client{i}", f"Surname{i}"), 
+            Coordinate(i, i*2)
         ),
-        Product("Coca Cola", 1)
-    ),
-    Shipment(
-        Client(
-            Name("Luis", "Avila"), 
-            Coordinate(35, 10)
-        ),
-        Product("Coca Cola", 1)
-    ),
-    Shipment(
-        Client(
-            Name("Maria", "Lopez"), 
-            Coordinate(10, 10)
-        ),
-        Product("Coca Cola", 1)
-    ),
-    Shipment(
-        Client(
-            Name("Jose", "Garcia"), 
-            Coordinate(79, -88)
-        ),
-        Product("Coca Cola", 1)
-    ),
-    Shipment(
-        Client(
-            Name("Carla", "Fernandez"), 
-            Coordinate(4, 15)
-        ),
-        Product("Coca Cola", 1)
-    ),
+        Product("Product Name", i)
+    )
+    for i in range(1, 21)
 ]

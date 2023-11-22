@@ -1,4 +1,3 @@
-import tkinter as tk
 
 def click_coord(event, lbl_coordX, lbl_coordY, canvas_mapa):
     canvas_mapa.delete("marker")

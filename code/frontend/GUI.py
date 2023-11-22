@@ -45,6 +45,9 @@ def entry_creator(canvas, x, y, placeholder, win_order, canvas_order):
     canvas_order.create_window(x, y, anchor=tk.NW, window=entry)
     return entry
 
+def get_shipment(selected):
+    print(selected)
+
 ###### FIN FUNCIONES #######
 
 ##### VENTANA REALIZACIÓN PEDIDOS #####
@@ -120,7 +123,7 @@ def Order_win(main_win):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     #command=#Realizar funcion
+                                     command =lambda: get_shipment(selected.get())
                                      )
     canvas_order.create_window(300,900, anchor=tk.NW,window=btn_confirm_purchase)
 
@@ -145,14 +148,13 @@ lbl_menu_title = tk.Label(main_win,
                           width=20)
 lbl_menu_title.pack(pady=20, padx=20, in_=canvas)
 
-btn_SignUp = tk.Button(main_win,
-                       text="Registrar Cliente",
-                       font="consolas 22 bold",
-                       bg="pale green",
-                       relief=tk.GROOVE, bd=2,
-                       width=20,
-                       activebackground="aquamarine",
-                       command=lambda: SignUp_win(main_win, [img_signup, img_map]))
+btn_SignUp = button(
+    main_win,
+    text="Registrar Cliente",
+    command=lambda: SignUp_win(main_win, [img_signup, img_map]),
+    font="consolas 22 bold"
+)
+
 btn_SignUp.pack(pady=20, padx=20, in_=canvas)
 
 btn_Orders = tk.Button(main_win,

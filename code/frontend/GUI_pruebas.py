@@ -75,7 +75,7 @@ canvas_order.create_text(600,260,
 
 entries = []
 y_increased = 0
-for i in range(0,10):
+for i in range(0,1):
     entry_creator(canvas_order, 205, 290+y_increased, "Producto")
     entry_creator(canvas_order, 505, 290+y_increased, "Peso")
     y_increased = y_increased + 60

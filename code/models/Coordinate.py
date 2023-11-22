@@ -56,19 +56,19 @@ class Coordinate:
         self._y = y
     
     #Método para obtener la distancia respecto al origen
-    def get_distance(self) -> float:
+    def get_distance(self) -> int:
         """
         Obtiene la distancia respecto al origen
         """
-        return sqrt(self._x**2 + self._y**2)
+        return int(sqrt(self._x**2 + self._y**2))
 
     #Método para obtener la distancia respecto a otro objeto
-    def get_distance_to(self, other: object) -> float:
+    def get_distance_to(self, other: object) -> int:
         """
         Obtiene la distancia respecto a otro objeto
         """
         if isinstance(other, Coordinate):
-            return sqrt((self._x - other.get_x())**2 + (self._y - other.get_y())**2)
+            return int(sqrt((self._x - other.get_x())**2 + (self._y - other.get_y())**2))
         return NotImplemented
 
     #Método para obtener las coordenadas en forma de tupla
