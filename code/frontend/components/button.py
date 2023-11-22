@@ -20,8 +20,10 @@ def button(
         command = command,
         font = font,
         bg = bg,
-        relief = tk.GROOVE, bd = 2,
-        width = 10, height = 1,
+        relief = tk.GROOVE,
+        bd = 2,
+        padx=10,
+        pady=5,
         activebackground= activebackground
     )
     

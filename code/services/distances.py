@@ -1,7 +1,7 @@
 from typing import List
 from models.Shipment import Shipment
+from models.Coordinate import Coordinate
 
-from constants import NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST
 from constants import VEHICLE_LIMIT
 
 def filter_shipments(shipments: List[Shipment]):
@@ -31,3 +31,11 @@ def get_addresses(shipments: List[Shipment]) -> List[int]:
     distances = [ shipment.get_client().get_address() for shipment in shipments ]
 
     return distances
+
+def get_coordinates(shipments: List[Shipment]) -> List[Coordinate]:
+    """
+        Recibe una lista de pedidos y retorna una lista con las coordenadas de cada pedido
+    """
+    coordinates = [ shipment.get_client().get_address() for shipment in shipments ]
+
+    return coordinates
