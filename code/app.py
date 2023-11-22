@@ -1,4 +1,4 @@
-from frontend.code.GUI import main_win
+from frontend.GUI import main_win
 
 
 def main():
