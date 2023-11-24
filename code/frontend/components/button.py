@@ -24,6 +24,6 @@ def button(
         bd = 2,
         padx=10,
         pady=5,
-        activebackground= activebackground
+        activebackground = activebackground
     )
     

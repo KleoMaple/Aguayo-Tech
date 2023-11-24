@@ -20,5 +20,5 @@ class Shipment:
         self._product = product
     
     def __str__(self) -> str:
-        return f"Cliente: {self._client.get_name()} - Producto: {self._product.get_name()}"
+        return f"Cliente: {self._client.get_name()}, Dirección: {self._client.get_address()} - Producto: {self._product.get_name()}, Peso: {self._product.get_weight()} kg"
     

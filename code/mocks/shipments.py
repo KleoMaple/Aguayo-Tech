@@ -4,8 +4,6 @@ from models.Name import Name
 from models.Coordinate import Coordinate
 from models.Product import Product
 
-from typing import List
-
 shipments = [
     Shipment(
         Client(
