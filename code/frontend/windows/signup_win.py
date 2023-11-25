@@ -1,14 +1,44 @@
+import json
 import tkinter as tk
-
 from frontend.components.button import button
-
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
-
 from frontend.utilities.map import click_coord
+from services.clients import get_clients_names, get_clients
 
-def hola():
-    print("Hola")
+def register_client_data(coordy,coordx,nombre,apellido,lbl_warning,win_signup,main_win):
+    coordx_text = coordy.cget('text')
+    coordy_text = coordx.cget('text')
+    clients = get_clients()
+    list_clients = get_clients_names(clients)
+    full_name = f"{nombre.get()} {apellido.get()}"
+    existing_client = full_name in list_clients
+    if(coordx_text != "Coord Y" and coordy_text != "Coord X" and 
+                nombre.get() != "Nombre" and apellido.get() != "Apellido" and not existing_client):
+       lbl_warning.config(text="Registro Exitoso")
+       coordx_float = float(coordy_text)
+       coordy_float = float(coordx_text)
+       new_client = {
+           "nombre": nombre.get(),
+           "apellido": apellido.get(),
+           "coordenada_X": coordx_float,
+           "coordenada_Y": coordy_float
+       }
+       #clients["clients"].append(new_client)
+       #with open('ruta_de_tu_archivo.json', 'w') as file:
+       #     json.dump(clients, file, indent=2)
+    elif existing_client:
+        lbl_warning.config(text="Cliente ya Registrado")
+    else:
+        lbl_warning.config(text="Faltan Campos por Llenar")
+        coordx.config(text="Coord X")
+        coordy.config(text="Coord Y")
+        nombre.delete(0, tk.END)
+        nombre.insert(0, "Nombre")
+        nombre.config(fg='grey')
+        apellido.delete(0, tk.END)
+        apellido.insert(0, "Apellido")
+        apellido.config(fg='grey')
 
 def SignUp_win(main_win, images):
     main_win.withdraw()
@@ -49,6 +79,7 @@ def SignUp_win(main_win, images):
     canvas_signup.create_window(500,115,anchor=tk.NW,window=in_apellido)
     canvas_signup.create_text(485,160,text="Ingresar datos de nuevo cliente", font="consolas 16 bold")
 
+    canvas_signup.create_text(155,250,text="Coordenada X",font="consolas 14 bold")
     lbl_coordx = tk.Label(canvas_signup,
                          bg="white", fg="gray",
                          font="consolas 18",
@@ -57,6 +88,7 @@ def SignUp_win(main_win, images):
                          bd=3, anchor=tk.W)
     lbl_coordx.place(x=250, y=260)
 
+    canvas_signup.create_text(305,250,text="Coordenada Y",font="consolas 14 bold")
     lbl_coordy = tk.Label(canvas_signup,
                          bg="white", fg="gray",
                          font="consolas 18",
@@ -66,6 +98,14 @@ def SignUp_win(main_win, images):
     lbl_coordy.place(x=100, y=260)
     canvas_signup.create_text(210,350,text="Haga Click en el Mapa para seleccionar\nla dirección de entrega.",
                               font="consolas 14 bold",anchor=tk.CENTER)
+    
+    lbl_warning = tk.Label(canvas_signup,
+                           text="",
+                           font="consolas 14 bold",
+                           width=25,
+                           relief=tk.GROOVE,
+                           bd=3)
+    lbl_warning.place(x=100, y=600)
 
     ######### FIN DE NOMBRE Y APELLIDOS ########
 
@@ -79,10 +119,10 @@ def SignUp_win(main_win, images):
 
     ########### FIN MAPA Y COORDENADAS ########
 
-    btn_registrar = button(win_signup, "Registrar", lambda: hola())
-    
-    canvas_signup.create_window(175,420,anchor=tk.NW,window = btn_registrar)
+    btn_registrar = button(win_signup, "Registrar", lambda: register_client_data(lbl_coordx,lbl_coordy,in_nombre,
+                                                                                 in_apellido,lbl_warning,win_signup,main_win))
+    canvas_signup.create_window(155,420,anchor=tk.NW,window = btn_registrar)
 
     btn_end_main = button(win_signup, "Salir", lambda: finish_window(win_signup, main_win))
-
     canvas_signup.create_window(175,490,anchor=tk.NW,window=btn_end_main)
+    win_signup.protocol("WM_DELETE_WINDOW", lambda: finish_window(win_signup, main_win))
