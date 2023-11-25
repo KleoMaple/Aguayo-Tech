@@ -42,11 +42,22 @@ def entry_creator(x, y, placeholder, win_order, canvas_order):
     canvas_order.create_window(x, y, anchor=tk.NW, window=entry)
     return entry
 
+def add_more_products(entries):
+    for i, entry in enumerate(entries):
+        if i%2 == 0:
+            entry.delete(0, tk.END)
+            entry.insert(0, "Producto")
+            entry.config(fg="gray")
+        else:
+            entry.delete(0, tk.END)
+            entry.insert(0, "Peso")
+            entry.config(fg="gray")
+
 def Order_win(main_win, img_order):
     main_win.withdraw()
     win_order = tk.Toplevel()
     win_order.title("Realización de Pedidos")
-    win_order.geometry("900x700+500+0")
+    win_order.geometry("900x700+500+150")
     win_order.resizable(height=False, width=False)
 
     canvas_order = tk.Canvas(win_order, width=900, height=1000)
@@ -122,7 +133,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     #command=#Realizar funcion
+                                     command=lambda: add_more_products(entries)
                                      )
     canvas_order.create_window(545,550, anchor=tk.NW,window=btn_add_more_products)
     win_order.protocol("WM_DELETE_WINDOW", lambda: finish_window(win_order, main_win))

@@ -1,22 +1,40 @@
 {
-    "clients": [
-        {
-            "nombre": "Juan",
-            "apellido": "Pérez",
-            "coordenada_X": 10,
-            "coordenada_Y": 20
-        },
-        {
-            "nombre": "María",
-            "apellido": "Gómez",
-            "coordenada_X": 15,
-            "coordenada_Y": 25
-        },
-        {
-            "nombre": "Carlos",
-            "apellido": "Rodríguez",
-            "coordenada_X": 8,
-            "coordenada_Y": 18
-        }
-    ]
+  "clients": [
+    {
+      "nombre": "Juan",
+      "apellido": "P\u00e9rez",
+      "coordenada_X": 10,
+      "coordenada_Y": 20
+    },
+    {
+      "nombre": "Mar\u00eda",
+      "apellido": "G\u00f3mez",
+      "coordenada_X": 15,
+      "coordenada_Y": 25
+    },
+    {
+      "nombre": "Carlos",
+      "apellido": "Rodr\u00edguez",
+      "coordenada_X": 8,
+      "coordenada_Y": 18
+    },
+    {
+      "nombre": "Emili\u00e1no",
+      "apellido": "Anaya",
+      "coordenada_X": 8.25,
+      "coordenada_Y": 33.33
+    },
+    {
+      "nombre": "Juarez",
+      "apellido": "Padilla",
+      "coordenada_X": -30.13,
+      "coordenada_Y": -39.19
+    },
+    {
+      "nombre": "Jorge",
+      "apellido": "Ernesto",
+      "coordenada_X": 51.25,
+      "coordenada_Y": 54.05
+    }
+  ]
 }

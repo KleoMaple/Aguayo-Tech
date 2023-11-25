@@ -5,6 +5,7 @@ from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
 from frontend.utilities.map import click_coord
 from services.clients import get_clients_names, get_clients
+from constants import CLIENTS_PATH
 
 def register_client_data(coordy,coordx,nombre,apellido,lbl_warning,win_signup,main_win):
     coordx_text = coordy.cget('text')
@@ -13,20 +14,31 @@ def register_client_data(coordy,coordx,nombre,apellido,lbl_warning,win_signup,ma
     list_clients = get_clients_names(clients)
     full_name = f"{nombre.get()} {apellido.get()}"
     existing_client = full_name in list_clients
-    if(coordx_text != "Coord Y" and coordy_text != "Coord X" and 
-                nombre.get() != "Nombre" and apellido.get() != "Apellido" and not existing_client):
-       lbl_warning.config(text="Registro Exitoso")
-       coordx_float = float(coordy_text)
-       coordy_float = float(coordx_text)
-       new_client = {
-           "nombre": nombre.get(),
-           "apellido": apellido.get(),
-           "coordenada_X": coordx_float,
-           "coordenada_Y": coordy_float
-       }
-       #clients["clients"].append(new_client)
-       #with open('ruta_de_tu_archivo.json', 'w') as file:
-       #     json.dump(clients, file, indent=2)
+    archivo_json = CLIENTS_PATH
+    if(coordx_text != "Coord Y" and coordy_text != "Coord X" and nombre.get() != "Nombre" and apellido.get() != "Apellido" and not existing_client):
+        with open(archivo_json, 'r', encoding='UTF-8') as file:
+            data = json.load(file)
+        lbl_warning.config(text="Registro Exitoso")
+        coordx_float = float(coordy_text)
+        coordy_float = float(coordx_text)
+        new_client = {
+            "nombre": nombre.get(),
+            "apellido": apellido.get(),
+            "coordenada_X": coordx_float,
+            "coordenada_Y": coordy_float
+        }
+        data["clients"].append(new_client)
+        with open(CLIENTS_PATH, 'w', encoding='UTF-8') as file:
+             json.dump(data, file, indent=2)
+        coordx.config(text="Coord X")
+        coordy.config(text="Coord Y")
+        nombre.delete(0, tk.END)
+        nombre.insert(0, "Nombre")
+        nombre.config(fg='grey')
+        apellido.delete(0, tk.END)
+        apellido.insert(0, "Apellido")
+        apellido.config(fg='grey')
+
     elif existing_client:
         lbl_warning.config(text="Cliente ya Registrado")
     else:
