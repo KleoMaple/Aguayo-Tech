@@ -15,7 +15,7 @@ CLIENTS_PATH = "mocks/clients.json"
 VEHICLE_LIMIT = 25
 
 LIGHT_VEHICLE = Vehicle("camion1", 80)
-HEAVY_VEHICLE = Vehicle("camion2", 80)
+HEAVY_VEHICLE = Vehicle("camion2", 120)
 
 WAREHOUSE = Coordinate(0, 0)
 
