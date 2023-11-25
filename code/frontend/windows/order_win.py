@@ -46,18 +46,13 @@ def Order_win(main_win, img_order):
     main_win.withdraw()
     win_order = tk.Toplevel()
     win_order.title("Realización de Pedidos")
-    win_order.geometry("900x1000+500+0")
+    win_order.geometry("900x700+500+0")
     win_order.resizable(height=False, width=False)
 
     canvas_order = tk.Canvas(win_order, width=900, height=1000)
     canvas_order.pack(side="left", fill="both", expand=True)
+
     canvas_order.create_image(0,0, anchor=tk.NW, image=img_order)
-
-    scrollbar_y = tk.Scrollbar(win_order, orient="vertical", command=canvas_order.yview)
-    scrollbar_y.pack(side="right", fill="y")
-    canvas_order.config(yscrollcommand=scrollbar_y.set)
-    canvas_order.config(scrollregion=canvas_order.bbox("all"))
-
     lbl_menu_ord = tk.Label(win_order,
                             text="Ordenar Pedido",
                             font="consolas 22 bold",
@@ -97,14 +92,12 @@ def Order_win(main_win, img_order):
 
     entries = []
     y_increased = 0
-    for i in range(0,10):
+    for i in range(0,4):
         entry_producto = entry_creator(205, 290+y_increased, "Producto",win_order,canvas_order)
         entry_peso = entry_creator(505, 290+y_increased, "Peso",win_order,canvas_order)
         entries.append(entry_producto)
         entries.append(entry_peso)
         y_increased = y_increased + 60
-
-    
 
     btn_end_main = tk.Button(win_order,
                          text="Salir",
@@ -113,7 +106,7 @@ def Order_win(main_win, img_order):
                          relief=tk.GROOVE, bd=2,
                          activebackground="aquamarine",
                          command=lambda: finish_window(win_order, main_win))
-    canvas_order.create_window(200,900, anchor=tk.NW,window=btn_end_main)
+    canvas_order.create_window(200,550, anchor=tk.NW,window=btn_end_main)
 
     btn_confirm_purchase = tk.Button(win_order,text="Confirmar Pedido",
                                      font="consolas 18 bold",
@@ -122,7 +115,7 @@ def Order_win(main_win, img_order):
                                      bd=2,activebackground="aquamarine",
                                      command=lambda:validar_entradas(entries)
                                      )
-    canvas_order.create_window(300,900, anchor=tk.NW,window=btn_confirm_purchase)
+    canvas_order.create_window(300,550, anchor=tk.NW,window=btn_confirm_purchase)
 
     btn_add_more_products = tk.Button(win_order,text="Más Productos",
                                      font="consolas 18 bold",
@@ -131,6 +124,5 @@ def Order_win(main_win, img_order):
                                      bd=2,activebackground="aquamarine",
                                      #command=#Realizar funcion
                                      )
-    canvas_order.create_window(545,900, anchor=tk.NW,window=btn_add_more_products)
-
+    canvas_order.create_window(545,550, anchor=tk.NW,window=btn_add_more_products)
     win_order.protocol("WM_DELETE_WINDOW", lambda: finish_window(win_order, main_win))
