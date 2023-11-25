@@ -1,9 +1,10 @@
+from cgitb import text
 import tkinter as tk
 from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
 
-def validar_entradas(entries, selected, orders):
+def validar_entradas(entries, selected, orders, lbl_message_products):
     producto_tmp = ""
     peso_tmp = ""
     products = []
@@ -43,8 +44,12 @@ def validar_entradas(entries, selected, orders):
                         clients[1].append(product)
                     clients[2] = clients[2] + peso_sum
                     break
+            lbl_message_products.config(text="Productos Añadidos")
+            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
         else:        
             orders.append([selected.get(), products, peso_sum])
+            lbl_message_products.config(text="Productos Añadidos")
+            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
     
 
 def entry_creator(x, y, placeholder, win_order, canvas_order):
@@ -56,14 +61,16 @@ def entry_creator(x, y, placeholder, win_order, canvas_order):
     return entry
 
 
-def confirm_products(entries, selected, orders):
-    validar_entradas(entries, selected, orders)
-    
+def confirm_products(entries, selected, orders, lbl_message_products):
+    validar_entradas(entries, selected, orders, lbl_message_products)
     ####SUBIR TODOS LOS DATOS AL ALGORITMO DE RUTAS
     print(orders)
+    orders.clear()
+    lbl_message_products.config(text="Pedido Registrado")
+    lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
 
-def add_more_products(entries, selected, orders):
-    validar_entradas(entries, selected, orders)
+def add_more_products(entries, selected, orders, lbl_message_products):
+    validar_entradas(entries, selected, orders, lbl_message_products)
     for i, entry in enumerate(entries):
         if i%2 == 0:
             entry.delete(0, tk.END)
@@ -132,6 +139,14 @@ def Order_win(main_win, img_order):
         entries.append(entry_peso)
         y_increased = y_increased + 60
 
+    lbl_message_products = tk.Label(canvas_order,
+                                    text="",
+                                    font="consolas 14 bold",
+                                    width=25,
+                                    relief=tk.GROOVE,
+                                    bd=3)
+    lbl_message_products.place(x=325, y=650)
+
     btn_end_main = tk.Button(win_order,
                          text="Salir",
                          font="consolas 18 bold",
@@ -146,7 +161,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda:confirm_products(entries, selected, orders)
+                                     command=lambda:confirm_products(entries, selected, orders, lbl_message_products)
                                      )
     canvas_order.create_window(300,550, anchor=tk.NW,window=btn_confirm_purchase)
 
@@ -155,7 +170,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda: add_more_products(entries, selected, orders)
+                                     command=lambda: add_more_products(entries, selected, orders, lbl_message_products)
                                      )
     canvas_order.create_window(545,550, anchor=tk.NW,window=btn_add_more_products)
     win_order.protocol("WM_DELETE_WINDOW", lambda: finish_window(win_order, main_win))
