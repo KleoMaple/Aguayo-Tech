@@ -3,10 +3,11 @@ from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
 
-def validar_entradas(entries):
+def validar_entradas(entries, selected, orders):
     producto_tmp = ""
     peso_tmp = ""
     products = []
+    peso_sum = 0
     ban = 0
     reset = 0
     for entry in entries:
@@ -31,8 +32,20 @@ def validar_entradas(entries):
                 ban -= 1
                 reset = 1
         if producto_tmp != "" and peso_tmp != "":
-            products.append([producto_tmp, float(peso_tmp)])
-    print(products)
+            products.append(producto_tmp)
+            peso_sum = peso_sum + float(peso_tmp)    
+    existing_client = any(client[0] == selected.get() for client in orders)
+    if len(products) > 0:
+        if existing_client:
+            for clients in orders:
+                if clients[0] == selected.get():
+                    for product in products:
+                        clients[1].append(product)
+                    clients[2] = clients[2] + peso_sum
+                    break
+        else:        
+            orders.append([selected.get(), products, peso_sum])
+    
 
 def entry_creator(x, y, placeholder, win_order, canvas_order):
     entry = tk.Entry(win_order, bg="white", fg="gray", font="consolas 14")
@@ -42,7 +55,15 @@ def entry_creator(x, y, placeholder, win_order, canvas_order):
     canvas_order.create_window(x, y, anchor=tk.NW, window=entry)
     return entry
 
-def add_more_products(entries):
+
+def confirm_products(entries, selected, orders):
+    validar_entradas(entries, selected, orders)
+    
+    ####SUBIR TODOS LOS DATOS AL ALGORITMO DE RUTAS
+    print(orders)
+
+def add_more_products(entries, selected, orders):
+    validar_entradas(entries, selected, orders)
     for i, entry in enumerate(entries):
         if i%2 == 0:
             entry.delete(0, tk.END)
@@ -102,6 +123,7 @@ def Order_win(main_win, img_order):
                              font="consolas 14 bold")
 
     entries = []
+    orders = []
     y_increased = 0
     for i in range(0,4):
         entry_producto = entry_creator(205, 290+y_increased, "Producto",win_order,canvas_order)
@@ -124,7 +146,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda:validar_entradas(entries)
+                                     command=lambda:confirm_products(entries, selected, orders)
                                      )
     canvas_order.create_window(300,550, anchor=tk.NW,window=btn_confirm_purchase)
 
@@ -133,7 +155,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda: add_more_products(entries)
+                                     command=lambda: add_more_products(entries, selected, orders)
                                      )
     canvas_order.create_window(545,550, anchor=tk.NW,window=btn_add_more_products)
     win_order.protocol("WM_DELETE_WINDOW", lambda: finish_window(win_order, main_win))

@@ -18,7 +18,7 @@ shipments = [
     for i in range(1, 61)
 ]
 
-pedido: {
+'''pedido: {
     "Cliente":{
         "first": "askldfjklas",
         "last": "asldkfjklas",
@@ -29,4 +29,4 @@ pedido: {
         "name": "askldfjklas",
         "weight": 123
     }
-}
+}'''
