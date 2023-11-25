@@ -3,14 +3,14 @@ from models.Coordinate import Coordinate
 
 class Client:
     """
-    -Clase Cliente-\n
+    - Clase Cliente-\n
     clase para identificar a un cliente por su dirección y nombre
 
-    -Atributos\n
+    - Atributos\n
     name -> Name\n
     address -> Coordinate\n
 
-    -Métodos\n
+    - Métodos\n
     get_name()\n
     get_address()\n
     set_name( name: Name )\n

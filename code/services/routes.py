@@ -1,7 +1,7 @@
 from mocks.shipments import shipments
 
 from services.distances import filter_shipments, get_coordinates
-from services.graph import create_graph, draw_graph
+from services.graph import create_graph
 
 from models.Coordinate import Coordinate
 from models.Vehicle import Vehicle
@@ -20,46 +20,57 @@ def remove_shipments(shipments: List[Shipment], shipments_to_remove: List[Shipme
         shipments.remove(shipment)
 
     return shipments
-   
-def get_route(root: Coordinate, g: nx.Graph, vehicle: Vehicle, shipments: List[Shipment]):
+
+def get_route_test(root: Coordinate, g: nx.Graph, vehicle: Vehicle, shipments: List[Shipment]):
     vehicle_shipments = vehicle.get_shipments()
+    unvisited_points = get_coordinates(shipments)
     shipments = remove_shipments(shipments, vehicle_shipments)
-    unvisited_points = get_coordinates(vehicle_shipments)
 
     route = [root]
     unvisited_points.remove(root)
     vehicle_shipments = remove_shipments(vehicle_shipments, [shipment for shipment in vehicle_shipments if shipment.get_client().get_address() == root])
 
     while unvisited_points:
-
+        #Se obtiene la siguiente coordenada más cercana a la raíz
         next = get_next(g, root)
-        if not next:
+
+        if not next and unvisited_points:
+            
+            next = max(get_coordinates(vehicle_shipments))
+            g = create_graph(get_coordinates(vehicle_shipments))
+            
+        elif not next: 
             break
 
         if next in unvisited_points:
+            #Se elimina el siguiente nodo de los nodos no visitados
             unvisited_points.remove(next)
+
+            #Se recupera el pedido asociado a next
             shipment_to_remove = [shipment for shipment in vehicle_shipments if shipment.get_client().get_address() == next]
 
+            #Se elimina el pedido de los pedidos del vehículo
             vehicle_shipments = remove_shipments(vehicle_shipments, shipment_to_remove)
-            
-        route.append(next)
 
-        if len(vehicle_shipments) == 0:
-            
+            #Se agrega el siguiente nodo a la ruta
+            route.append(next)
+        
+        #Si no quedan pedidos por entregar se llena el vehículo
+        if not vehicle_shipments:
+            #Se llena el vehículo con los pedidos que quedan por entregar y se asignan a vehicle_shipments
             vehicle_shipments = vehicle.fill_vehicle(shipments)
+
             if not vehicle_shipments:
                 break
             
+            #Se agrega el punto de partida a la ruta
             route.append(WAREHOUSE)
-
             shipments = remove_shipments(shipments, vehicle_shipments)
-            unvisited_points = get_coordinates(vehicle_shipments)
-            
-            g = create_graph(unvisited_points)
-            next = max(unvisited_points)
+            g = create_graph(get_coordinates(vehicle_shipments))
+            next = max(get_coordinates(vehicle_shipments))
         
         root = next
-        
+
     return route
 
 def get_next(g: nx.Graph, root: Coordinate) -> Coordinate:
@@ -76,6 +87,7 @@ def get_next(g: nx.Graph, root: Coordinate) -> Coordinate:
         point = Coordinate(edge[1][0], edge[1][1])
 
         if point in visited_points:
+        
             continue
 
         distance_to_root = root.get_distance_to(point)
@@ -104,6 +116,9 @@ def main():
 
     shipments_beyond, shipments_within = filter_shipments(shipments)
     
+    coordinates_beyond = get_coordinates(shipments_beyond)
+    coordinates_within = get_coordinates(shipments_within)
+    
     LIGHT_VEHICLE.fill_vehicle(shipments_beyond.copy())
     HEAVY_VEHICLE.fill_vehicle(shipments_within.copy())
     
@@ -120,28 +135,41 @@ def main():
     root_within = max(points_within)
     visited_points.append(root_within)
     
-    route_beyond = get_route(
+    route_beyond = get_route_test(
         root_beyond, 
         g_beyond, 
         LIGHT_VEHICLE,
         shipments_beyond.copy()
     )
 
-    route_within = get_route(
+    route_within = get_route_test(
         root_within, 
         g_within,  
         HEAVY_VEHICLE,
         shipments_within.copy()
     )
+
+    shipments_delivered = []
+    for shipment in route_beyond:
+        if shipment in coordinates_beyond:
+            shipments_delivered.append(shipment)
     
-    print('\n\n')
+    
+    print(f"TOTAL DE PUNTOS {len(coordinates_beyond)}")
+    print("\n")
+    print(f"PEDIDOS ENTREGADOS {len(shipments_delivered)}")
+    
     print_route(route_beyond, LIGHT_VEHICLE)
-    print(f"PEDIDOS TOTALES: {len(shipments_beyond)}, PEDIDOS ENTREGADOS: {len(route_beyond)}")
+    print(f"PEDIDOS TOTALES: {len(shipments_beyond)}, PEDIDOS ENTREGADOS: {len(shipments_delivered)}")
+
+    shipments_delivered = []
+    for shipment in route_within:
+        if shipment in coordinates_within:
+            shipments_delivered.append(shipment)
     print('\n\n')
     print_route(route_within, HEAVY_VEHICLE)
-    print(f"PEDIDOS TOTALES: {len(shipments_within)}, PEDIDOS ENTREGADOS: {len(route_within)}")
+    print(f"PEDIDOS TOTALES: {len(shipments_within)}, PEDIDOS ENTREGADOS: {len(shipments_delivered)}")
 
 
 if __name__ == '__main__':
     main()
-    
