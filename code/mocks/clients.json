@@ -1,53 +1,53 @@
 {
-    "clients": [
-        {
-            "nombre": "Juan",
-            "apellido": "Pérez",
-            "coordenada_X": 10,
-            "coordenada_Y": 20
-        },
-        {
-            "nombre": "María",
-            "apellido": "Gómez",
-            "coordenada_X": 15,
-            "coordenada_Y": 25
-        },
-        {
-            "nombre": "Carlos",
-            "apellido": "Rodríguez",
-            "coordenada_X": 8,
-            "coordenada_Y": 18
-        }
-        ,
-        {
-            "nombre": "Mariana",
-            "apellido": "Santoyo",
-            "coordenada_X": 50,
-            "coordenada_Y": -75
-        },
-        {
-            "nombre": "Jose",
-            "apellido": "Cabrera",
-            "coordenada_X": 20,
-            "coordenada_Y": -20
-        },
-        {
-            "nombre": "Jesus",
-            "apellido": "Montes",
-            "coordenada_X": -80,
-            "coordenada_Y": -80
-        },
-        {
-            "nombre": "Angel",
-            "apellido": "Ochoa",
-            "coordenada_X": -40,
-            "coordenada_Y": 5
-        },
-        {
-            "nombre": "Daniela",
-            "apellido": "Figueroa",
-            "coordenada_X": -50,
-            "coordenada_Y": -3
-        }
-    ]
+  "clients": [
+      {
+          "nombre": "Juan",
+          "apellido": "Pérez",
+          "coordenada_X": 10,
+          "coordenada_Y": 20
+      },
+      {
+          "nombre": "María",
+          "apellido": "Gómez",
+          "coordenada_X": 15,
+          "coordenada_Y": 25
+      },
+      {
+          "nombre": "Carlos",
+          "apellido": "Rodríguez",
+          "coordenada_X": 8,
+          "coordenada_Y": 18
+      }
+      ,
+      {
+          "nombre": "Mariana",
+          "apellido": "Santoyo",
+          "coordenada_X": 50,
+          "coordenada_Y": -75
+      },
+      {
+          "nombre": "Jose",
+          "apellido": "Cabrera",
+          "coordenada_X": 20,
+          "coordenada_Y": -20
+      },
+      {
+          "nombre": "Jesus",
+          "apellido": "Montes",
+          "coordenada_X": -80,
+          "coordenada_Y": -80
+      },
+      {
+          "nombre": "Angel",
+          "apellido": "Ochoa",
+          "coordenada_X": -40,
+          "coordenada_Y": 5
+      },
+      {
+          "nombre": "Daniela",
+          "apellido": "Figueroa",
+          "coordenada_X": -50,
+          "coordenada_Y": -3
+      }
+  ]
 }
