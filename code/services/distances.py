@@ -23,15 +23,6 @@ def filter_shipments(shipments: List[Shipment]):
 
     return shipments_beyond, shipments_within
 
-
-def get_addresses(shipments: List[Shipment]) -> List[int]:
-    """
-        Recibe una lista de pedidos y retorna una lista con las distancias de cada pedido
-    """
-    distances = [ shipment.get_client().get_address() for shipment in shipments ]
-
-    return distances
-
 def get_coordinates(shipments: List[Shipment]) -> List[Coordinate]:
     """
         Recibe una lista de pedidos y retorna una lista con las coordenadas de cada pedido
