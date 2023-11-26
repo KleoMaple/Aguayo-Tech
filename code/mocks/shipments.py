@@ -18,15 +18,16 @@ shipments = [
     for i in range(1, 61)
 ]
 
-'''pedido: {
-    "Cliente":{
-        "first": "askldfjklas",
-        "last": "asldkfjklas",
-        "coordinate_x": 123,
-        "coordinate_y": 123
-    },
-    "Producto":{
-        "name": "askldfjklas",
-        "weight": 123
-    }
+'''pedido: [
+        "Cliente":{
+            "first": "askldfjklas",
+            "last": "asldkfjklas",
+            "coordinate_x": 123,
+            "coordinate_y": 123
+        },
+        "Producto":{
+            "name": "askldfjklas",
+            "weight": 123
+        }
+    ]
 }'''
