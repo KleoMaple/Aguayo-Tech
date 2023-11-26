@@ -1,6 +1,6 @@
 from typing import List
 from models.Shipment import Shipment
-from services.subsets import subsets, get_below_weight_sets
+from services.combinations import get_vehicle_shipments
 
 class Vehicle:
     """
@@ -98,18 +98,13 @@ class Vehicle:
 
         retorna las coordenadas de los pedidos
         """
-        weights = [ shipment.get_product().get_weight() for shipment in shipments ]
-        weights_subsets = subsets(weights)
-        below_weight_sets = get_below_weight_sets(weights_subsets, self._payload)
-
-        max_len_set = max(below_weight_sets, key=len)
-        shipments = [ shipment for shipment in shipments if shipment.get_product().get_weight() in max_len_set ]
+        vehicle_shipments = get_vehicle_shipments(shipments.copy(), self.get_payload())
+       
+        weights = [shipment.get_product().get_weight() for shipment in vehicle_shipments]
         
-        self.set_shipments(shipments)
-        self.set_current_payload(sum(max_len_set))
-    
-        
-        return shipments
+        self.set_shipments(vehicle_shipments)
+        self.set_current_payload(sum(weights))
+        return vehicle_shipments
     
     #Método igual que
     def __eq__(self, other: object) -> bool:
