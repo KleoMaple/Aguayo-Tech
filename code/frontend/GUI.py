@@ -3,6 +3,7 @@ from constants import ASSETS_PATH
 from frontend.utilities.window import finish_window
 from frontend.windows.signup_win import SignUp_win
 from frontend.windows.order_win import Order_win
+#from frontend.windows.delivered_win import Delivered_win
 from frontend.components.button import button
 
 main_win = tk.Tk()
@@ -13,6 +14,7 @@ main_win.resizable(width = False, height = False)
 img_main = tk.PhotoImage(
     file=f"{ASSETS_PATH}bg_menu.png"
 )
+
 img_signup = tk.PhotoImage(
     file = f"{ASSETS_PATH}bg_signup.png"
 )
@@ -25,9 +27,17 @@ img_order = tk.PhotoImage(
     file = f"{ASSETS_PATH}bg_order.png"
 )
 
+img_delivered =tk.PhotoImage(
+    file = f"{ASSETS_PATH}bg_delivered.png"
+)
+
 canvas = tk.Canvas(main_win, width=700, height=500)
 canvas.pack(fill="both", expand=True)
 canvas.create_image(0, 0, anchor=tk.NW, image=img_main)
+
+
+#def get_shipmnet(selected):
+ #   Delivered_win(main_win, img_delivered)
 
 lbl_menu_title = tk.Label(main_win,
                           text="MAIN MENU",
