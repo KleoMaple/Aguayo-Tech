@@ -1,6 +1,6 @@
 from mocks.shipments import shipments
 
-from services.distances import filter_shipments, get_coordinates
+from services.shipments import filter_shipments, get_coordinates
 from services.graph import create_graph, draw_graph
 
 from models.Coordinate import Coordinate

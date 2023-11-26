@@ -1,16 +1,18 @@
 from models.Name import Name
 from models.Coordinate import Coordinate
 
+import json
+
 class Client:
     """
-    -Clase Cliente-\n
+    ## Clase Cliente\n
     clase para identificar a un cliente por su dirección y nombre
 
-    -Atributos\n
+    ### Atributos\n
     name -> Name\n
     address -> Coordinate\n
 
-    -Métodos\n
+    ### Métodos\n
     get_name()\n
     get_address()\n
     set_name( name: Name )\n
@@ -104,6 +106,24 @@ class Client:
         Evalúa si tanto el nombre es mayor o igual que el de el otro objeto alfabéticamente
         """
         return not self.__lt__(other)
+
+    #Método para serializar el objeto
+    def serialize(self) -> str:
+        """
+        Serializa el objeto en formato JSON
+        """
+        client_json = self._name.serialize()[:-1] + ", " + self._address.serialize()[1:]
+
+        return client_json
+    
+    #Método para deserializar el objeto
+    def deserialize(self, client_json: str) -> None:
+        """
+        Deserializa el objeto en formato JSON
+        """
+        client_dict = json.loads(client_json)
+        self._name = Name(client_dict["first"], client_dict["last"])
+        self._address = Coordinate(client_dict["coordinate_X"], client_dict["coordinate_Y"])
 
     #Método para representar el objeto en string
     def __str__(self) -> str:

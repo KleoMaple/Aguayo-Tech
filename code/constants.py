@@ -18,24 +18,3 @@ LIGHT_VEHICLE = Vehicle("camion1", 80)
 HEAVY_VEHICLE = Vehicle("camion2", 80)
 
 WAREHOUSE = Coordinate(0, 0)
-
-"""
-    LIMITES DEL MAPA
-
-                           100
-                            |
-               NORTH_EAST   |    NORTH_WEST
-                            |
-                            |
-          -100--------------+--------------100
-                            |
-                            |
-              SOUTH_EAST    |    SOUTH_WEST
-                            |
-                          -100
-
-"""
-NORTH_EAST = [Coordinate(-100, 0), Coordinate(0, 100)]
-NORTH_WEST = [Coordinate(0, 100), Coordinate(100, 0)]
-SOUTH_EAST = [Coordinate(-100, 0), Coordinate(0, -100)]
-SOUTH_WEST = [Coordinate(100, 0), Coordinate(0, -100)]
