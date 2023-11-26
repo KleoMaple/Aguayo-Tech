@@ -4,6 +4,7 @@ from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
 from constants import CLIENTS_PATH, ORDERS_PATH
+from frontend.windows.delivered_win import Delivered_win
 
 def coordinates_client(nombre, apellido, data):
     for client in data['clients']:
@@ -73,7 +74,6 @@ def entry_creator(x, y, placeholder, win_order, canvas_order):
     entry.bind('<FocusOut>', lambda event: on_entry_leave(event, entry, placeholder))
     canvas_order.create_window(x, y, anchor=tk.NW, window=entry)
     return entry
-
 
 def confirm_products(entries, selected, orders, lbl_message_products):
     validar_entradas(entries, selected, orders, lbl_message_products)
