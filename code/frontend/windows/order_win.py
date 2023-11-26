@@ -3,8 +3,9 @@ import tkinter as tk
 from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
-from constants import CLIENTS_PATH, ORDERS_PATH
+from constants import CLIENTS_PATH, HEAVY_VEHICLE, LIGHT_VEHICLE, ORDERS_PATH, VEHICLE_LIMIT
 from frontend.windows.delivered_win import Delivered_win
+from models.Coordinate import Coordinate
 
 def coordinates_client(nombre, apellido, data):
     for client in data['clients']:
@@ -46,6 +47,8 @@ def validar_entradas(entries, selected, orders, lbl_message_products):
             peso_sum = peso_sum + float(peso_tmp)
 
     ###OBTENER COORDENADAS DEL CLIENTE   
+    #LA LISTA QUE DEVUELVE TIENE LA SIGUIENTE ESTRUCTURA 
+    #["CLIENTE, [PRODUCTOS], TOTAL_PESOS, COORD_X, COORD_Y"]
     nombre, apellido = user.split()
     with open(CLIENTS_PATH, 'r', encoding="UTF-8") as file:
         data = json.load(file)
@@ -64,8 +67,20 @@ def validar_entradas(entries, selected, orders, lbl_message_products):
         else:        
             orders.append([user, products, peso_sum, coord_x, coord_y])
             lbl_message_products.config(text="Productos Añadidos")
-            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
-    
+            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))   
+        client_coordinate = Coordinate(coord_x, coord_y)
+        distance = client_coordinate.get_distance()
+        if distance > VEHICLE_LIMIT:
+            vehicle = LIGHT_VEHICLE
+        else:
+            vehicle = HEAVY_VEHICLE
+        load_limit = vehicle.get_payload()
+        for clients in orders:
+            if clients[0] == user:
+                if clients[2] > load_limit:
+                    print("Exceso de carga")
+                    clients.remove(clients)
+        
 
 def entry_creator(x, y, placeholder, win_order, canvas_order):
     entry = tk.Entry(win_order, bg="white", fg="gray", font="consolas 14")

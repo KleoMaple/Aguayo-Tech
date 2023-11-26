@@ -1,6 +1,5 @@
 import tkinter as tk
 from constants import ASSETS_PATH
-
 from frontend.utilities.window import finish_window
 
 
