@@ -1,15 +1,16 @@
 from math import sqrt
+import json
 
 class Coordinate:
     """
-    -Clase coordenada-\n
+    ## Clase coordenada\n
     clase para representar direcciones en el sistema
 
-    -Atributos\n
+    ### Atributos\n
     x -> float\n
     y -> float\n
 
-    -Métodos\n
+    ### Métodos\n
     get_x()\n
     get_y()\n
     set_x( x: float )\n
@@ -125,6 +126,29 @@ class Coordinate:
         """
         return not self.__lt__(other)
 
+    #Método para serializar el objeto
+    def serialize(self) -> str:
+        """
+        Serializa el objeto en formato JSON
+        """
+        coordinate_dict = dict(
+            coordinate_X = self._x,
+            coordinate_Y = self._y
+        )
+
+        return json.dumps(coordinate_dict)
+    
+    #Método para deserializar el objeto
+    def deserialize(self, coordinate_json: str):
+        """
+        Deserializa el objeto en formato JSON
+        """
+        coordinate_dict = json.loads(coordinate_json)
+
+        self._x = coordinate_dict["coordinate_X"]
+        self._y = coordinate_dict["coordinate_Y"]
+
+    
     #Método para representar el objeto en string
     def __str__(self) -> str:
         return f"(X {self._x}, Y {self._y})"

@@ -1,3 +1,14 @@
 {
-    "orders": []
+    "orders": [
+        {
+            "first": "Mariana",
+            "last": "Santoyo",
+            "coordinate_X": 50,
+            "coordinate_Y": -75,
+            "product_name": [
+                "Television"
+            ],
+            "weight": 100.0
+        }
+    ]
 }
