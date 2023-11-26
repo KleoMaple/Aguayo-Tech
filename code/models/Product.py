@@ -1,13 +1,15 @@
+import json
+
 class Product:
     """
-    -Clase Producto-\n
+    ## Clase Producto\n
     clase para definir los productos que se enviaran
 
-    -Atributos\n
+    ### Atributos\n
     name -> string\n
     weight -> int\n
 
-    -Métodos\n
+    ### Métodos\n
     get_name()\n
     get_weight()\n
     set_name( name: string )\n
@@ -99,6 +101,27 @@ class Product:
         Compara si el peso que ocupa el producto es mayor o igual que el de el otro objeto
         """
         return not self.__lt__(other)
+
+    #Método para serializar el objeto
+    def serialize(self) -> str:
+        """
+        Serializa el objeto en un JSON
+        """
+        product_dict = dict(
+            product_name = self._name,
+            weight = self._weight,
+        )
+
+        return json.dumps(product_dict)
+    
+    #Método para deserializar el objeto
+    def deserialize(self, product_json: str) -> None:
+        """
+        Deserializa el objeto en formato JSON
+        """
+        product_dict = json.loads(product_json)
+        self._name = product_dict["product_name"]
+        self._weight = product_dict["weight"]
 
     #Método para representar el objeto en string
     def __str__(self) -> str:

@@ -2,6 +2,8 @@ from typing import List
 from models.Shipment import Shipment
 from services.combinations import get_vehicle_shipments
 
+import json
+
 class Vehicle:
     """
     ## Clase Vehiculo\n
@@ -153,6 +155,28 @@ class Vehicle:
         """
         return not self.__lt__(other)
 
+    #Método para serializar el objeto
+    def serialize(self) -> str:
+        """
+        Serializa el objeto en un string
+        """
+        vehicle_dict = dict(
+            id = self._id,
+            payload = self._payload,
+        )
+
+        return json.dumps(vehicle_dict)
+
+    #Método para deserializar el objeto
+    def deserialize(self, vehicle_json: str) -> None:
+        """
+        Deserializa el objeto en formato JSON
+        """
+        vehicle_dict = json.loads(vehicle_json)
+
+        self._id = vehicle_dict["id"]
+        self._payload = vehicle_dict["payload"]
+    
     #Método para representar el objeto en string
     def __str__(self) -> str:
         res = f"Vehiculo: {self._id}, Limite de carga: {self._payload}\n"

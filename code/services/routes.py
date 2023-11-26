@@ -1,11 +1,10 @@
-from mocks.shipments import shipments
-
-from services.distances import filter_shipments, get_coordinates
+from services.shipments import filter_shipments, get_coordinates, get_shipments_by_coordinates, get_shipments
 from services.graph import create_graph
 
 from models.Coordinate import Coordinate
 from models.Vehicle import Vehicle
 from models.Shipment import Shipment
+from models.Route import Route
 
 from constants import WAREHOUSE, LIGHT_VEHICLE, HEAVY_VEHICLE
 
@@ -15,19 +14,46 @@ from typing import List
 
 visited_points = [] 
 
+#Función para eliminar los pedidos que ya fueron asignados a un vehículo
 def remove_shipments(shipments: List[Shipment], shipments_to_remove: List[Shipment])-> List[Shipment]:
+    """
+    Función para eliminar los pedidos que ya fueron asignados a un vehículo
+
+    ### Recibe como parámetros:
+    - shipments: Lista de pedidos
+    - shipments_to_remove: Lista de pedidos a eliminar
+
+    ### Retorna:
+    - Lista de pedidos sin los pedidos que ya fueron asignados a un vehículo
+    """
     for shipment in shipments_to_remove:
         shipments.remove(shipment)
 
     return shipments
 
-def get_route_test(root: Coordinate, g: nx.Graph, vehicle: Vehicle, shipments: List[Shipment]):
+#Función para obtener la ruta más corta entre un punto de partida y los demás puntos
+def get_route(root: Coordinate, g: nx.Graph, vehicle: Vehicle, shipments: List[Shipment]) -> List[Coordinate]:
+    """
+    Algoritmo para calcular la ruta más corta entre un punto de partida y los demás puntos
+
+    ### Recibe como parámetros:
+    - root: Punto de partida
+    - g: Grafo con las coordenadas de los puntos
+    - vehicle: Vehículo que realizará la ruta
+    - shipments: Lista de pedidos
+
+    ### Retorna:
+    - Lista de coordenadas con la ruta más corta
+    """
     vehicle_shipments = vehicle.get_shipments()
     unvisited_points = get_coordinates(shipments)
     shipments = remove_shipments(shipments, vehicle_shipments)
 
-    route = [root]
-    unvisited_points.remove(root)
+    route = [root] #Se agrega el punto de partida a la ruta
+
+    unvisited_points.remove(root) #Se elimina el punto de partida de los puntos no visitados
+
+    #Se eliminan los pedidos que se encuentran en el punto de partida
     vehicle_shipments = remove_shipments(vehicle_shipments, [shipment for shipment in vehicle_shipments if shipment.get_client().get_address() == root])
 
     while unvisited_points:
@@ -73,11 +99,22 @@ def get_route_test(root: Coordinate, g: nx.Graph, vehicle: Vehicle, shipments: L
 
     return route
 
+#Función para obtener el siguiente punto más cercano a la raíz
 def get_next(g: nx.Graph, root: Coordinate) -> Coordinate:
-    
+    """
+    Función para obtener el siguiente punto más cercano a la raíz
+
+    ### Recibe como parámetros:
+    - g: Grafo con las coordenadas de los puntos
+    - root: Punto de partida
+
+    ### Retorna:
+    - Siguiente punto más cercano a la raíz
+    """
     if not root: 
         return None
-    root_edges = list(g.edges(root.get_point()))
+    
+    root_edges = list(g.edges(root.get_point())) #Se obtienen las aristas de la raíz
     
     distances_to_root = []
     points = []
@@ -102,74 +139,61 @@ def get_next(g: nx.Graph, root: Coordinate) -> Coordinate:
         next = None
 
     return next
-        
-def print_route(route: List[Coordinate], vehicle: Vehicle):
 
-    print(f"|{'-'*10}|{'-'*20}|")
-    print(f"|{'RUTA': <10}|{'DIRECCIÓN': <20}|")
-    print(f"|{'-'*10}|{'-'*20}|")
-    for point in route:
-        print(f"|{vehicle.get_id(): <10}|{str(point.get_point()): <20}|")
-    print(f"|{'-'*10}|{'-'*20}|")
+#Función para obtener las rutas de los vehículos   
+def get_routes():
+    """
+    Función para obtener las rutas de los vehículos
     
-def main():
+    ### Retorna:
+    - Ruta del vehículo liviano
+    - Ruta del vehículo pesado
+    """
+    shipments_beyond, shipments_within = filter_shipments(get_shipments())
 
-    shipments_beyond, shipments_within = filter_shipments(shipments)
-    
-    coordinates_beyond = get_coordinates(shipments_beyond)
-    coordinates_within = get_coordinates(shipments_within)
-    
-    LIGHT_VEHICLE.fill_vehicle(shipments_beyond.copy())
-    HEAVY_VEHICLE.fill_vehicle(shipments_within.copy())
-    
-    points_beyond = get_coordinates(LIGHT_VEHICLE.get_shipments())
-    points_within = get_coordinates(HEAVY_VEHICLE.get_shipments())
-    
-    g_beyond = create_graph(points_beyond)
-    g_within = create_graph(points_within)
+    if not shipments_beyond:
+        route_within = calculate_route(shipments_within, HEAVY_VEHICLE)
+        route_beyond = Route([])
+    elif not shipments_within:
+        route_beyond = calculate_route(shipments_beyond, LIGHT_VEHICLE)
+        route_within = Route([])
+    else:
+        route_beyond = calculate_route(shipments_beyond, LIGHT_VEHICLE)
+        visited_points.clear()
+        route_within = calculate_route(shipments_within, HEAVY_VEHICLE)
 
-    root_beyond = max(points_beyond)
-    visited_points.append(root_beyond)
+    return route_beyond, route_within
 
-    visited_points.clear()
-    root_within = max(points_within)
-    visited_points.append(root_within)
+
+#Función para calcular la ruta de un vehículo    
+def calculate_route(shipments: List[Shipment], vehicle: Vehicle) -> Route:
+    """
+    Función para calcular la ruta de un vehículo 
     
-    route_beyond = get_route_test(
-        root_beyond, 
-        g_beyond, 
-        LIGHT_VEHICLE,
-        shipments_beyond.copy()
+    ### Recibe como parámetros:
+    - shipments: Lista de pedidos
+    - vehicle: Vehículo que realizará la ruta
+
+    ### Retorna:
+    - Ruta del vehículo
+    """
+    vehicle.fill_vehicle(shipments.copy())
+    points = get_coordinates(vehicle.get_shipments())
+    graph = create_graph(points)
+    
+    root = max(points)
+    visited_points.append(root)
+
+    route_coordinates = get_route(
+        root, 
+        graph, 
+        vehicle,
+        shipments.copy()
     )
 
-    route_within = get_route_test(
-        root_within, 
-        g_within,  
-        HEAVY_VEHICLE,
-        shipments_within.copy()
-    )
-
-    shipments_delivered = []
-    for shipment in route_beyond:
-        if shipment in coordinates_beyond:
-            shipments_delivered.append(shipment)
-    
-    
-    print(f"TOTAL DE PUNTOS {len(coordinates_beyond)}")
-    print("\n")
-    print(f"PEDIDOS ENTREGADOS {len(shipments_delivered)}")
-    
-    print_route(route_beyond, LIGHT_VEHICLE)
-    print(f"PEDIDOS TOTALES: {len(shipments_beyond)}, PEDIDOS ENTREGADOS: {len(shipments_delivered)}")
-
-    shipments_delivered = []
-    for shipment in route_within:
-        if shipment in coordinates_within:
-            shipments_delivered.append(shipment)
-    print('\n\n')
-    print_route(route_within, HEAVY_VEHICLE)
-    print(f"PEDIDOS TOTALES: {len(shipments_within)}, PEDIDOS ENTREGADOS: {len(shipments_delivered)}")
+    route = Route(get_shipments_by_coordinates(route_coordinates, shipments))
+    return route
 
 
 if __name__ == '__main__':
-    main()
+    get_routes()

@@ -1,12 +1,15 @@
+import json
+
 class Name:
     """
-    -Clase Nombre-\n
+    ## Clase Nombre\n
     clase para definir el nombre de alguna persona, en este caso del cliente\n
-    -Atributos\n
+    
+    ### Atributos\n
     first -> string\n
     last -> string\n
     
-    -Métodos\n
+    ### Métodos\n
     get_first()\n
     get_last()\n
     set_first( first: string )\n
@@ -98,6 +101,28 @@ class Name:
         """
         return not self.__lt__(other)
     
+    #Método para serializar el objeto
+    def serialize(self) -> str:
+        """
+        Serializa el objeto en formato JSON
+        """
+        name_dict = dict(
+            first = self._first,
+            last = self._last
+        )
+        
+        return json.dumps(name_dict)
+    
+    #Método para deserializar el objeto
+    def deserialize(self, name_json: str) -> None:
+        """
+        Deserializa el objeto en formato JSON
+        """
+        name_dict = json.loads(name_json)
+
+        self._first = name_dict["nombre"]
+        self._last = name_dict["apellido"]
+
     #Método para representar el objeto en string
     def __str__(self) -> str:
         return f"{self._first} {self._last}"
