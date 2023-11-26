@@ -2,9 +2,17 @@ from typing import List
 
 from models.Shipment import Shipment
 
+#Método para obtener los pedidos que se pueden realizar con un vehículo
 def get_vehicle_shipments(shipments: List[Shipment], vehicle_payload: int):
     """
-    Recibe la lista de pedidos y retorna la mejor opcion de pedidos a realizar
+    Método para obtener los pedidos que se pueden realizar con un vehículo
+
+    ### Recibe como parámetros:
+    - shipments: Lista de pedidos
+    - vehicle_payload: Carga máxima del vehículo
+
+    ### Retorna:
+    - Lista de pedidos que se pueden realizar con un vehículo
     """
     weights = [shipment.get_product().get_weight() for shipment in shipments]
     

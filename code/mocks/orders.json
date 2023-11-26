@@ -1,32 +1,3 @@
 {
-    "orders": [
-        {
-            "client": {
-                "nombre": "Juan",
-                "apellido": "P\u00e9rez",
-                "coordenada_X": 10,
-                "coordenada_Y": 20
-            },
-            "product": {
-                "nombre": [
-                    "manzan"
-                ],
-                "peso": 11.0
-            }
-        },
-        {
-            "client": {
-                "nombre": "Juan",
-                "apellido": "P\u00e9rez",
-                "coordenada_X": 10,
-                "coordenada_Y": 20
-            },
-            "product": {
-                "nombre": [
-                    "manzan"
-                ],
-                "peso": 111.0
-            }
-        }
-    ]
+    "orders": []
 }

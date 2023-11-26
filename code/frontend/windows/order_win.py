@@ -3,6 +3,7 @@ import tkinter as tk
 from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
+from services.routes import get_routes
 from constants import CLIENTS_PATH, HEAVY_VEHICLE, LIGHT_VEHICLE, ORDERS_PATH, VEHICLE_LIMIT
 from frontend.windows.delivered_win import Delivered_win
 from models.Coordinate import Coordinate
@@ -75,11 +76,6 @@ def validar_entradas(entries, selected, orders, lbl_message_products):
         else:
             vehicle = HEAVY_VEHICLE
         load_limit = vehicle.get_payload()
-        for clients in orders:
-            if clients[0] == user:
-                if clients[2] > load_limit:
-                    print("Exceso de carga")
-                    clients.remove(clients)
         
 
 def entry_creator(x, y, placeholder, win_order, canvas_order):
@@ -101,23 +97,25 @@ def confirm_products(entries, selected, orders, lbl_message_products):
             data = json.load(file)
         for value in orders:
             nombre, apellido = value[0].split()
-            new_order = {
-                "client":{
-                    "nombre": nombre,
-                    "apellido": apellido,
-                    "coordenada_X": value[3],
-                    "coordenada_Y": value[4]
-                },
-                "product":{
-                    "nombre": value[1],
-                    "peso": value[2]
-                }
-            }
+            new_order = dict(
+                first = nombre,
+                last = apellido,
+                coordinate_X = value[3],
+                coordinate_Y = value[4],
+                product_name = value[1],
+                weight = value[2]
+            )
+            
             data["orders"].append(new_order)
             with open(ORDERS_PATH, 'w', encoding="UTF-8") as file:
                 json.dump(data,file,indent=4)
         lbl_message_products.config(text="Pedido Registrado")
         lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
+
+    route_beyond, route_within = get_routes()
+    
+    print(route_beyond)
+    print(route_within)
     orders.clear()
 
 def add_more_products(entries, selected, orders, lbl_message_products):
