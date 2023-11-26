@@ -9,6 +9,7 @@ from models.Vehicle import Vehicle
 
 ASSETS_PATH = "assets/"
 CLIENTS_PATH = "mocks/clients.json"
+ORDERS_PATH = "mocks/orders.json"
 
 # BACKEND
 

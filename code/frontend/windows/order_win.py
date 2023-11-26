@@ -1,9 +1,18 @@
+import json
 import tkinter as tk
 from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
+from constants import CLIENTS_PATH, ORDERS_PATH
 
-def validar_entradas(entries, selected, orders):
+def coordinates_client(nombre, apellido, data):
+    for client in data['clients']:
+        if client['nombre'] == nombre and client['apellido'] == apellido:
+            return client['coordenada_X'], client['coordenada_Y']
+    return None, None
+
+def validar_entradas(entries, selected, orders, lbl_message_products):
+    user = selected.get()
     producto_tmp = ""
     peso_tmp = ""
     products = []
@@ -33,18 +42,28 @@ def validar_entradas(entries, selected, orders):
                 reset = 1
         if producto_tmp != "" and peso_tmp != "":
             products.append(producto_tmp)
-            peso_sum = peso_sum + float(peso_tmp)    
-    existing_client = any(client[0] == selected.get() for client in orders)
+            peso_sum = peso_sum + float(peso_tmp)
+
+    ###OBTENER COORDENADAS DEL CLIENTE   
+    nombre, apellido = user.split()
+    with open(CLIENTS_PATH, 'r', encoding="UTF-8") as file:
+        data = json.load(file)
+    coord_x, coord_y = coordinates_client(nombre, apellido, data)
+    existing_client = any(client[0] == user for client in orders)
     if len(products) > 0:
         if existing_client:
             for clients in orders:
-                if clients[0] == selected.get():
+                if clients[0] == user:
                     for product in products:
                         clients[1].append(product)
                     clients[2] = clients[2] + peso_sum
                     break
+            lbl_message_products.config(text="Productos Añadidos")
+            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
         else:        
-            orders.append([selected.get(), products, peso_sum])
+            orders.append([user, products, peso_sum, coord_x, coord_y])
+            lbl_message_products.config(text="Productos Añadidos")
+            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
     
 
 def entry_creator(x, y, placeholder, win_order, canvas_order):
@@ -56,14 +75,38 @@ def entry_creator(x, y, placeholder, win_order, canvas_order):
     return entry
 
 
-def confirm_products(entries, selected, orders):
-    validar_entradas(entries, selected, orders)
-    
+def confirm_products(entries, selected, orders, lbl_message_products):
+    validar_entradas(entries, selected, orders, lbl_message_products)
     ####SUBIR TODOS LOS DATOS AL ALGORITMO DE RUTAS
-    print(orders)
+    #LA LISTA QUE DEVUELVE TIENE LA SIGUIENTE ESTRUCTURA 
+    #["CLIENTE, [PRODUCTOS], TOTAL_PESOS, COORD_X, COORD_Y"]
+    
+    if len(orders) != 0:
+        with open(ORDERS_PATH, 'r', encoding="UTF-8") as file:
+            data = json.load(file)
+        for value in orders:
+            nombre, apellido = value[0].split()
+            new_order = {
+                "client":{
+                    "nombre": nombre,
+                    "apellido": apellido,
+                    "coordenada_X": value[3],
+                    "coordenada_Y": value[4]
+                },
+                "product":{
+                    "nombre": value[1],
+                    "peso": value[2]
+                }
+            }
+            data["orders"].append(new_order)
+            with open(ORDERS_PATH, 'w', encoding="UTF-8") as file:
+                json.dump(data,file,indent=4)
+        lbl_message_products.config(text="Pedido Registrado")
+        lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
+    orders.clear()
 
-def add_more_products(entries, selected, orders):
-    validar_entradas(entries, selected, orders)
+def add_more_products(entries, selected, orders, lbl_message_products):
+    validar_entradas(entries, selected, orders, lbl_message_products)
     for i, entry in enumerate(entries):
         if i%2 == 0:
             entry.delete(0, tk.END)
@@ -75,6 +118,11 @@ def add_more_products(entries, selected, orders):
             entry.config(fg="gray")
 
 def Order_win(main_win, img_order):
+    with open(ORDERS_PATH, 'r') as file:
+        data = json.load(file)
+    data["orders"] = []
+    with open(ORDERS_PATH, 'w') as file:
+        json.dump(data, file, indent=4)
     main_win.withdraw()
     win_order = tk.Toplevel()
     win_order.title("Realización de Pedidos")
@@ -132,6 +180,14 @@ def Order_win(main_win, img_order):
         entries.append(entry_peso)
         y_increased = y_increased + 60
 
+    lbl_message_products = tk.Label(canvas_order,
+                                    text="",
+                                    font="consolas 14 bold",
+                                    width=25,
+                                    relief=tk.GROOVE,
+                                    bd=3)
+    lbl_message_products.place(x=325, y=650)
+
     btn_end_main = tk.Button(win_order,
                          text="Salir",
                          font="consolas 18 bold",
@@ -146,7 +202,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda:confirm_products(entries, selected, orders)
+                                     command=lambda:confirm_products(entries, selected, orders, lbl_message_products)
                                      )
     canvas_order.create_window(300,550, anchor=tk.NW,window=btn_confirm_purchase)
 
@@ -155,7 +211,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda: add_more_products(entries, selected, orders)
+                                     command=lambda: add_more_products(entries, selected, orders, lbl_message_products)
                                      )
     canvas_order.create_window(545,550, anchor=tk.NW,window=btn_add_more_products)
     win_order.protocol("WM_DELETE_WINDOW", lambda: finish_window(win_order, main_win))
