@@ -2,6 +2,8 @@ import tkinter as tk
 from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
+from frontend.windows.delivered_win import Delivered_win
+
 
 def validar_entradas(entries, selected, orders):
     producto_tmp = ""
@@ -55,12 +57,12 @@ def entry_creator(x, y, placeholder, win_order, canvas_order):
     canvas_order.create_window(x, y, anchor=tk.NW, window=entry)
     return entry
 
-
 def confirm_products(entries, selected, orders):
     validar_entradas(entries, selected, orders)
     
     ####SUBIR TODOS LOS DATOS AL ALGORITMO DE RUTAS
     print(orders)
+
 
 def add_more_products(entries, selected, orders):
     validar_entradas(entries, selected, orders)
@@ -146,7 +148,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda:confirm_products(entries, selected, orders)
+                                     command=lambda:Delivered_win (main_win, confirm_products(entries, selected, orders))
                                      )
     canvas_order.create_window(300,550, anchor=tk.NW,window=btn_confirm_purchase)
 
