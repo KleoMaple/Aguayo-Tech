@@ -53,6 +53,12 @@
       "apellido": "Luna",
       "coordenada_X": -16.7,
       "coordenada_Y": 31.53
+    },
+    {
+      "nombre": "Emiliano",
+      "apellido": "Anaya",
+      "coordenada_X": 5.95,
+      "coordenada_Y": 6.76
     }
   ]
 }

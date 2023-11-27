@@ -59,9 +59,21 @@ def get_route(root: Coordinate, g: nx.Graph, vehicle: Vehicle, shipments: List[S
     while unvisited_points:
         #Se obtiene la siguiente coordenada más cercana a la raíz
         next = get_next(g, root)
+        #Si no quedan pedidos por entregar se llena el vehículo
+        if not vehicle_shipments:
+            #Se llena el vehículo con los pedidos que quedan por entregar y se asignan a vehicle_shipments
+            vehicle_shipments = vehicle.fill_vehicle(shipments)
+
+            if not vehicle_shipments:
+                break
+            
+            #Se agrega el punto de partida a la ruta
+            route.append(WAREHOUSE)
+            shipments = remove_shipments(shipments, vehicle_shipments)
+            g = create_graph(get_coordinates(vehicle_shipments))
+            next = max(get_coordinates(vehicle_shipments))
 
         if not next and unvisited_points:
-            
             next = max(get_coordinates(vehicle_shipments))
             g = create_graph(get_coordinates(vehicle_shipments))
             
@@ -81,19 +93,7 @@ def get_route(root: Coordinate, g: nx.Graph, vehicle: Vehicle, shipments: List[S
             #Se agrega el siguiente nodo a la ruta
             route.append(next)
         
-        #Si no quedan pedidos por entregar se llena el vehículo
-        if not vehicle_shipments:
-            #Se llena el vehículo con los pedidos que quedan por entregar y se asignan a vehicle_shipments
-            vehicle_shipments = vehicle.fill_vehicle(shipments)
-
-            if not vehicle_shipments:
-                break
-            
-            #Se agrega el punto de partida a la ruta
-            route.append(WAREHOUSE)
-            shipments = remove_shipments(shipments, vehicle_shipments)
-            g = create_graph(get_coordinates(vehicle_shipments))
-            next = max(get_coordinates(vehicle_shipments))
+        
         
         root = next
 
