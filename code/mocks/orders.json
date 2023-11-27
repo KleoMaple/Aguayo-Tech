@@ -1,24 +1,3 @@
 {
-    "orders": [
-        {
-            "first": "Juan",
-            "last": "P\u00e9rez",
-            "coordinate_X": 10,
-            "coordinate_Y": 20,
-            "product_name": [
-                "adwda"
-            ],
-            "weight": 11.0
-        },
-        {
-            "first": "Jesus",
-            "last": "Montes",
-            "coordinate_X": -80,
-            "coordinate_Y": -80,
-            "product_name": [
-                "adawdaw"
-            ],
-            "weight": 12.0
-        }
-    ]
+    "orders": []
 }
