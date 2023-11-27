@@ -3,7 +3,6 @@ from constants import ASSETS_PATH
 from frontend.utilities.window import finish_window
 from frontend.windows.signup_win import SignUp_win
 from frontend.windows.order_win import Order_win
-#from frontend.windows.delivered_win import Delivered_win
 from frontend.components.button import button
 
 main_win = tk.Tk()

@@ -4,8 +4,8 @@ from services.clients import get_clients_names, get_clients
 from frontend.utilities.placeholder import on_entry_click, on_entry_leave
 from frontend.utilities.window import finish_window
 from services.routes import get_routes
-from constants import CLIENTS_PATH, HEAVY_VEHICLE, LIGHT_VEHICLE, ORDERS_PATH, VEHICLE_LIMIT
 from frontend.windows.delivered_win import Delivered_win
+from constants import CLIENTS_PATH, HEAVY_VEHICLE, LIGHT_VEHICLE, ORDERS_PATH, VEHICLE_LIMIT
 from models.Coordinate import Coordinate
 
 def coordinates_client(nombre, apellido, data):
@@ -16,36 +16,16 @@ def coordinates_client(nombre, apellido, data):
 
 def validar_entradas(entries, selected, orders, lbl_message_products):
     user = selected.get()
-    producto_tmp = ""
-    peso_tmp = ""
     products = []
     peso_sum = 0
-    ban = 0
-    reset = 0
-    for entry in entries:
-        if reset == 1:
-            reset = 0
-            producto_tmp = ""
-            peso_tmp = ""
-        if ban == 0:
-            if entry.get() == "Producto":
-                ban += 1
-                continue
-            else:
-                producto_tmp = entry.get()
-                ban += 1
-        else:
-            if entry.get() == "Peso":
-                reset = 1
-                ban -= 1
-                continue
-            else:
-                peso_tmp = entry.get()
-                ban -= 1
-                reset = 1
-        if producto_tmp != "" and peso_tmp != "":
+
+    for i in range(0, len(entries), 2):
+        producto_tmp = entries[i].get()
+        peso_tmp = entries[i + 1].get()
+
+        if producto_tmp != "Producto" and peso_tmp != "Peso" and producto_tmp and peso_tmp:
             products.append(producto_tmp)
-            peso_sum = peso_sum + float(peso_tmp)
+            peso_sum += float(peso_tmp)
 
     ###OBTENER COORDENADAS DEL CLIENTE   
     #LA LISTA QUE DEVUELVE TIENE LA SIGUIENTE ESTRUCTURA 
@@ -55,27 +35,42 @@ def validar_entradas(entries, selected, orders, lbl_message_products):
         data = json.load(file)
     coord_x, coord_y = coordinates_client(nombre, apellido, data)
     existing_client = any(client[0] == user for client in orders)
+    client_coordinate = Coordinate(coord_x, coord_y)
+    distance = client_coordinate.get_distance()
+    if distance > VEHICLE_LIMIT:
+        vehicle = LIGHT_VEHICLE
+    else:
+        vehicle = HEAVY_VEHICLE
+    load_limit = vehicle.get_payload()
     if len(products) > 0:
         if existing_client:
-            for clients in orders:
-                if clients[0] == user:
-                    for product in products:
-                        clients[1].append(product)
-                    clients[2] = clients[2] + peso_sum
-                    break
-            lbl_message_products.config(text="Productos Añadidos")
-            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
-        else:        
-            orders.append([user, products, peso_sum, coord_x, coord_y])
-            lbl_message_products.config(text="Productos Añadidos")
-            lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))   
-        client_coordinate = Coordinate(coord_x, coord_y)
-        distance = client_coordinate.get_distance()
-        if distance > VEHICLE_LIMIT:
-            vehicle = LIGHT_VEHICLE
+            for client in orders:
+                if client[0] == user:
+                    client[1].extend(products)
+                    client[2] = client[2] + peso_sum
+                    if client[2] >= load_limit:
+                        orders.remove(client)
+                        lbl_message_products.config(text="Exceso de carga. Pedido Eliminado")
+                        lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
+                        #print(orders)
+                        return 0
+                    else:
+                        lbl_message_products.config(text="Productos Añadidos")
+                        lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
+                        #print(orders)
+                        return 1
         else:
-            vehicle = HEAVY_VEHICLE
-        load_limit = vehicle.get_payload()
+            if peso_sum < load_limit:
+                orders.append([user, products, peso_sum, coord_x, coord_y])
+                lbl_message_products.config(text="Productos Añadidos")
+                lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
+                #print(orders) 
+                return 1
+            else:
+                lbl_message_products.config(text="Exceso de Carga. Pedido Eliminado")
+                lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
+                #print(orders) 
+                return 0
         
 
 def entry_creator(x, y, placeholder, win_order, canvas_order):
@@ -86,13 +81,9 @@ def entry_creator(x, y, placeholder, win_order, canvas_order):
     canvas_order.create_window(x, y, anchor=tk.NW, window=entry)
     return entry
 
-def confirm_products(entries, selected, orders, lbl_message_products):
-    validar_entradas(entries, selected, orders, lbl_message_products)
-    ####SUBIR TODOS LOS DATOS AL ALGORITMO DE RUTAS
-    #LA LISTA QUE DEVUELVE TIENE LA SIGUIENTE ESTRUCTURA 
-    #["CLIENTE, [PRODUCTOS], TOTAL_PESOS, COORD_X, COORD_Y"]
-    
-    if len(orders) != 0:
+def confirm_products(main_win,win_order,entries, selected, orders, lbl_message_products):
+    flag = validar_entradas(entries, selected, orders, lbl_message_products)
+    if len(orders) != 0 and flag == 1:
         with open(ORDERS_PATH, 'r', encoding="UTF-8") as file:
             data = json.load(file)
         for value in orders:
@@ -111,12 +102,10 @@ def confirm_products(entries, selected, orders, lbl_message_products):
                 json.dump(data,file,indent=4)
         lbl_message_products.config(text="Pedido Registrado")
         lbl_message_products.after(5000, lambda: lbl_message_products.config(text=""))
-
-    route_beyond, route_within = get_routes()
-    
-    print(route_beyond)
-    print(route_within)
-    orders.clear()
+        route_beyond, route_within = get_routes()
+        orders.clear()
+        Delivered_win(main_win, win_order,route_beyond,route_within)
+        
 
 def add_more_products(entries, selected, orders, lbl_message_products):
     validar_entradas(entries, selected, orders, lbl_message_products)
@@ -196,10 +185,10 @@ def Order_win(main_win, img_order):
     lbl_message_products = tk.Label(canvas_order,
                                     text="",
                                     font="consolas 14 bold",
-                                    width=25,
+                                    width=35,
                                     relief=tk.GROOVE,
                                     bd=3)
-    lbl_message_products.place(x=325, y=650)
+    lbl_message_products.place(x=285, y=650)
 
     btn_end_main = tk.Button(win_order,
                          text="Salir",
@@ -215,7 +204,7 @@ def Order_win(main_win, img_order):
                                      bg="pale green",
                                      relief=tk.GROOVE,
                                      bd=2,activebackground="aquamarine",
-                                     command=lambda:confirm_products(entries, selected, orders, lbl_message_products)
+                                     command=lambda:confirm_products(main_win, win_order, entries, selected, orders, lbl_message_products)
                                      )
     canvas_order.create_window(300,550, anchor=tk.NW,window=btn_confirm_purchase)
 
