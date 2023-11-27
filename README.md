@@ -144,16 +144,31 @@ Es recomendable utilizar un entorno virtual para el manejo de librerías en el p
   source venv/scripts/activate
   ```
 
-## Librerias necesarias
+## Instrucciones para iniciar el programa
 
-- ### networkx
+### Librerias necesarias
+
+- #### networkx
 
   ```bash
   pip install networkx
   ```
 
-- ### matplotlib
+- #### matplotlib
 
   ```bash
   pip install matplotlib
+  ```
+
+### Iniciar el programa
+
+- #### Entrar a la carpeta code desde una terminal.
+
+  ```bash
+    cd code
+  ```
+
+- #### Ejecutar el comando desde la terminal para iniciar el programa.
+  ```bash
+    python app.py
   ```

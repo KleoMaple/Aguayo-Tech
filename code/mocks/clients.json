@@ -59,6 +59,12 @@
       "apellido": "Anaya",
       "coordenada_X": 5.95,
       "coordenada_Y": 6.76
+    },
+    {
+      "nombre": "Chico",
+      "apellido": "Aguayo",
+      "coordenada_X": 27.45,
+      "coordenada_Y": -0.45
     }
   ]
 }
