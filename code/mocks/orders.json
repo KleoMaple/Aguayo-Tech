@@ -6,9 +6,32 @@
             "coordinate_X": 10,
             "coordinate_Y": 20,
             "product_name": [
-                "adwda"
+                "Papa",
+                "dORITOS"
             ],
-            "weight": 11.0
+            "weight": 100.0
+        },
+        {
+            "first": "Carlos",
+            "last": "Rodr\u00edguez",
+            "coordinate_X": 8,
+            "coordinate_Y": 18,
+            "product_name": [
+                "Almohada",
+                "Doritos"
+            ],
+            "weight": 110.0
+        },
+        {
+            "first": "Emiliano",
+            "last": "Anaya",
+            "coordinate_X": 5.95,
+            "coordinate_Y": 6.76,
+            "product_name": [
+                "Espaguetti",
+                "Agua"
+            ],
+            "weight": 45.0
         },
         {
             "first": "Jesus",
@@ -16,7 +39,17 @@
             "coordinate_X": -80,
             "coordinate_Y": -80,
             "product_name": [
-                "adawdaw"
+                "Montain Dew"
+            ],
+            "weight": 56.0
+        },
+        {
+            "first": "Chico",
+            "last": "Aguayo",
+            "coordinate_X": 27.45,
+            "coordinate_Y": -0.45,
+            "product_name": [
+                "Agua"
             ],
             "weight": 12.0
         }
